@@ -1,0 +1,31 @@
+name: Deploy to Development
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8' # adjust to your project's Python version
+
+    - name: Install Serverless CLI
+      run: npm install -g serverless
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Deploy
+      run: serverless deploy --stage development
+
+    - name: Run tests
+      run: pytest
